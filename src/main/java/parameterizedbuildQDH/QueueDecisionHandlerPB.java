@@ -1,18 +1,18 @@
-package parameterizedbuildQDH;
+package hudson.plugins.parameterizedbuildQDH;
 
 import hudson.Util;
 import hudson.Extension;
 import hudson.model.Action;
+import hudson.model.Hudson;
+import hudson.model.Job;
 import hudson.model.Queue.Task;
 import hudson.model.Queue.QueueDecisionHandler;
-import hudson.model.Hudson;
 import hudson.model.Queue.Item;
 import hudson.model.ParametersAction;
 import hudson.model.ParameterValue;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
 
 @Extension
@@ -23,7 +23,7 @@ public class QueueDecisionHandlerPB extends QueueDecisionHandler {
 	    boolean list_match=false;
 	    List<ParametersAction> param_actions = Util.filter(actions, ParametersAction.class);
 	    ParametersAction param_action = null;
-	    Set<String> checked_params = new HashSet<String>();
+	    List<String> checkedParams;
 
 	    /* No parameters */
 	    if(param_actions.isEmpty())
@@ -31,23 +31,20 @@ public class QueueDecisionHandlerPB extends QueueDecisionHandler {
 
 
 	    /* FIXME : Generate list of compared param names */
-	    Set<ParameterValue> parameters = new HashSet<ParameterValue>();
-	    for (ParametersAction action: param_actions) {
-		    param_action = action;
-		    parameters.addAll(action.getParameters());
-	    }
-	    if (param_action == null)
+	    Job job = (Job)p;
+	    QDHProperty prop = (QDHProperty)job.getProperty(QDHProperty.class);
+	    if (prop == null)
 		    return true;
 
-	    for(ParameterValue param : parameters){
-		    checked_params.add(param.getName());
-	    }
+	    checkedParams = prop.getMergeParams();
+	    if (checkedParams.isEmpty())
+		    return true;
 
 	    /* Match parameters with elements in the queue */
 	    for(Item item : Hudson.getInstance().getQueue().getItems(p)) {
 		boolean param_match=true;
     		for (ParametersAction action: item.getActions(ParametersAction.class)) {
-			for(String param_name : checked_params){
+			for(String param_name : checkedParams){
 				ParameterValue val1 = param_action.getParameter(param_name);
 				ParameterValue val2 = action.getParameter(param_name);
 				
