@@ -5,6 +5,7 @@ import hudson.Extension;
 import hudson.model.Action;
 import hudson.model.Hudson;
 import hudson.model.Job;
+import hudson.model.Queue;
 import hudson.model.Queue.Task;
 import hudson.model.Queue.QueueDecisionHandler;
 import hudson.model.Queue.Item;
@@ -24,10 +25,10 @@ public class QueueDecisionHandlerPB extends QueueDecisionHandler {
     // private static final Logger LOGGER = Logger.getLogger(QueueDecisionHandlerPB.class.getName());
     @Override
     public boolean shouldSchedule(Task p, List<Action> actions) {	    
-	    boolean list_match=true;
 	    List<ParametersAction> param_actions = Util.filter(actions, ParametersAction.class);
 	    ParametersAction param_action = null;
 	    List<String> checkedParams;
+	    Queue queue = Hudson.getInstance().getQueue();
 
 	    // LOGGER.log(Level.INFO, "Entering QDHPB");
 
@@ -83,12 +84,11 @@ public class QueueDecisionHandlerPB extends QueueDecisionHandler {
 				break;
 		}
 		if(param_match == true){
-			// LOGGER.log(Level.INFO, "We found a match. We should not add it");
-			list_match=false;
-			break;
+			// LOGGER.log(Level.INFO, "Remove duplicate job in queue");
+			queue.cancel(item);
 		}
 	    }
 	    // LOGGER.log(Level.INFO, "Result is " + list_match);
-	    return list_match;
+	    return true;
     }
 }
