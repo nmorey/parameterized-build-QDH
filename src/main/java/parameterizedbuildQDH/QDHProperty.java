@@ -1,4 +1,4 @@
-package hudson.plugins.parameterizedbuildQDH;
+package parameterizedbuildQDH;
 
 import hudson.Util;
 import hudson.Extension;
@@ -12,32 +12,45 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 import org.apache.commons.lang.StringUtils;
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.StaplerRequest;
+import net.sf.json.JSONObject;
 
 import java.io.IOException;
 
 public class QDHProperty extends  JobProperty<AbstractProject<?,?>> {
 
-    private String[] mergeParams;
+    public final String mergeParams;
+    private String[] mergeParamsArray;
 
+    @DataBoundConstructor
     public QDHProperty(String mergeParams) {
-	    this.mergeParams = StringUtils.split( mergeParams, "," );
+	    this.mergeParams = mergeParams;
+	    this.mergeParamsArray = StringUtils.split( this.mergeParams, "," );
     }
 
-    public ArrayList<String> getMergeParams(){
-	    return new ArrayList<String>(Arrays.asList(mergeParams));
+    public String getMergeParams(){
+	    return mergeParams;
     }
+
+    public ArrayList<String> getMergeParamsArray(){
+	    return new ArrayList<String>(Arrays.asList(this.mergeParamsArray));
+    }
+ 
     @Extension
     public static class DescriptorImpl extends JobPropertyDescriptor {
-	    public DescriptorImpl() {
-		    super(QDHProperty.class);
-	    }
 
-	    // public boolean isApplicable(Class<? extends Job> jobType) {
-	    // 	    return AbstractProject.class.isParameterized(jobType);
-	    // }
-
+	    @Override
 	    public String getDisplayName() {
-		    return "Queue merge parameters";
+		    return Messages.QDHProperty_DisplayName();
 	    }
+
+	    @Override
+	    public QDHProperty newInstance(StaplerRequest req, JSONObject formData) throws FormException {
+		    if (formData.has("paramBlock"))
+			    return req.bindJSON(QDHProperty.class, formData.getJSONObject("paramBlock"));
+		    return null;
+	    }
+
     }
 }

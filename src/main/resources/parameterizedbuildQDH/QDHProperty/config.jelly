@@ -23,7 +23,10 @@ THE SOFTWARE.
 -->
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt" xmlns:p="/lib/hudson/project">
-  <f:entry title="Merge according to these parameters" field="mergeParams">
-    <f:textbox />
-  </f:entry>
+  <f:optionalBlock name="parameterizedQDH.paramBlock" title="${%Merge pending build on matching parameters}"
+   checked="${instance!=null}">
+      <f:entry title="Parameters match" field="mergeParams">
+        <f:textbox />
+      </f:entry>
+  </f:optionalBlock>
 </j:jelly>
