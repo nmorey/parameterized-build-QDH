@@ -21,20 +21,30 @@ import java.io.IOException;
 public class QDHProperty extends  JobProperty<AbstractProject<?,?>> {
 
     public final String mergeParams;
+    public final String fuseParams;
     private String[] mergeParamsArray;
+    private String[] fuseParamsArray;
 
     @DataBoundConstructor
-    public QDHProperty(String mergeParams) {
+		public QDHProperty(String mergeParams, String fuseParams) {
 	    this.mergeParams = mergeParams;
 	    this.mergeParamsArray = StringUtils.split( this.mergeParams, "," );
+	    this.fuseParams = fuseParams;
+	    this.fuseParamsArray = StringUtils.split( this.fuseParams, "," );
     }
 
     public String getMergeParams(){
 	    return mergeParams;
     }
-
     public ArrayList<String> getMergeParamsArray(){
 	    return new ArrayList<String>(Arrays.asList(this.mergeParamsArray));
+    }
+
+    public String getFuseParams(){
+	    return fuseParams;
+    }
+    public ArrayList<String> getFuseParamsArray(){
+	    return new ArrayList<String>(Arrays.asList(this.fuseParamsArray));
     }
  
     @Extension
