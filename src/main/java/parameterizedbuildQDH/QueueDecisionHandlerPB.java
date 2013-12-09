@@ -104,7 +104,7 @@ public class QueueDecisionHandlerPB extends QueueDecisionHandler {
 					// LOGGER.log(Level.INFO, "Found param with value '" + str_value.value + "'.");
 
 					if(prev_string != null){
-						current_params.put(param_name, prev_string + "," + str_value.value);
+						current_params.put(param_name, prev_string + prop.getSeparator() + str_value.value);
 					} else {
 						current_params.put(param_name, str_value.value);
 					}
@@ -125,7 +125,7 @@ public class QueueDecisionHandlerPB extends QueueDecisionHandler {
 					StringParameterValue str_item_param = (StringParameterValue)item_param;
 					// LOGGER.log(Level.INFO, "Fusing arg '" + item_param.getName() +"' with  '" + fused_string +
 					// 		   "' + '"+ str_item_param.value+"'.");
-					String new_value = fused_string + "," + str_item_param.value;
+					String new_value = fused_string + prop.getSeparator() + str_item_param.value;
 					new_param_list.add(new StringParameterValue(item_param.getName(), new_value));
 				}
 

@@ -25,14 +25,19 @@ public class QDHProperty extends  JobProperty<AbstractProject<?,?>> {
     private String[] mergeParamsArray;
     private String[] fuseParamsArray;
 
+	public final String separator;
+
     @DataBoundConstructor
-		public QDHProperty(String mergeParams, String fuseParams) {
+	public QDHProperty(String mergeParams, String fuseParams, String separator) {
 	    this.mergeParams = mergeParams;
 	    this.mergeParamsArray = StringUtils.split( this.mergeParams, "," );
 	    this.fuseParams = fuseParams;
 	    this.fuseParamsArray = StringUtils.split( this.fuseParams, "," );
+		this.separator = separator;
     }
-
+    public QDHProperty(String mergeParams, String fuseParams) {
+		this(mergeParams, fuseParams, ",");
+    }
     public String getMergeParams(){
 	    return mergeParams;
     }
@@ -46,7 +51,14 @@ public class QDHProperty extends  JobProperty<AbstractProject<?,?>> {
     public ArrayList<String> getFuseParamsArray(){
 	    return new ArrayList<String>(Arrays.asList(this.fuseParamsArray));
     }
- 
+	public String getSeparator(){
+		if(this.separator != null && this.separator.length() != 0){
+			return this.separator;
+		} else {
+			return ",";
+		}
+	}
+
     @Extension
     public static class DescriptorImpl extends JobPropertyDescriptor {
 
