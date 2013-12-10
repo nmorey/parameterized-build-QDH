@@ -38,6 +38,9 @@ public class QDHProperty extends  JobProperty<AbstractProject<?,?>> {
     public QDHProperty(String mergeParams, String fuseParams) {
 		this(mergeParams, fuseParams, ",");
     }
+    public QDHProperty(String mergeParams) {
+		this(mergeParams, "", ",");
+    }
     public String getMergeParams(){
 	    return mergeParams;
     }
