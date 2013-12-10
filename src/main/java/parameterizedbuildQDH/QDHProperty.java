@@ -42,14 +42,22 @@ public class QDHProperty extends  JobProperty<AbstractProject<?,?>> {
 	    return mergeParams;
     }
     public ArrayList<String> getMergeParamsArray(){
-	    return new ArrayList<String>(Arrays.asList(this.mergeParamsArray));
+		if(this.mergeParamsArray != null){
+			return new ArrayList<String>(Arrays.asList(this.mergeParamsArray));
+		} else {
+			return new ArrayList<String>();
+		}
     }
 
     public String getFuseParams(){
 	    return fuseParams;
     }
     public ArrayList<String> getFuseParamsArray(){
-	    return new ArrayList<String>(Arrays.asList(this.fuseParamsArray));
+		if(this.fuseParamsArray != null){
+			return new ArrayList<String>(Arrays.asList(this.fuseParamsArray));
+		} else {
+			return new ArrayList<String>();
+		}
     }
 	public String getSeparator(){
 		if(this.separator != null && this.separator.length() != 0){
