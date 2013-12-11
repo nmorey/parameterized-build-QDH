@@ -34,7 +34,9 @@
         <developerConnection>scm:git:git@github.com:nmorey/parameterized-build-QDH.git</developerConnection>
 	<url>https://github.com/nmorey/parameterized-build-QDH</url>
     </scm>
-
+    <properties>
+   	<maven-release-plugin.version>2.4.1</maven-release-plugin.version>
+    </properties>
   <!-- get every artifact through maven.glassfish.org, which proxies all the artifacts that we need -->
 
 
